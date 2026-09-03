@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/belentani7/skills-registry/main/cli/schema.json",
   "version": "1.0.0",
-  "updated_at": "2026-09-02T10:00:00Z",
-  "total_skills": 23,
+  "updated_at": "2026-09-03T00:00:00Z",
+  "total_skills": 24,
   "categories": {
     "coding-workflows": {
       "label": "Coding Workflows & Processes",
@@ -23,6 +23,10 @@
     "caveman": {
       "label": "Token Optimization",
       "description": "Ultra-compressed output modes, memory compression, cache maximization"
+    },
+    "design-systems": {
+      "label": "Visual Design Systems & Aesthetics",
+      "description": "UI/UX aesthetics, glassmorphism, 3D wireframes, neon styling, creative direction systems"
     }
   },
   "skills": [
@@ -358,6 +362,23 @@
       "dependencies": [],
       "files": ["SKILL.md"],
       "quality_score": 8.9,
+      "platforms": ["linux", "macos", "windows"]
+    },
+    {
+      "id": "neo-neoglass-3d",
+      "name": "Neo-Neoglass 3D",
+      "version": "1.0.0",
+      "category": "design-systems",
+      "description": "Complete aesthetic system fusing 3D wireframe precision with neon-red glassmorphism — immersive UI skeletons, layer depth, Judas beat pulses, cinematic fly-to camera",
+      "author": "Belentani",
+      "license": "MIT",
+      "trigger_contains": ["neon red glassmorphism", "3D wireframe UI", "glass effect", "neo neoglass", "judas experience visual", "cristal sangrante"],
+      "related_skills": ["three-js-particles", "react-three-fiber-r3f", "gsap-scroll-trigger", "svg-animation-paths", "glsl-shader-programming"],
+      "dependencies": [],
+      "files": ["SKILL.md"],
+      "size_bytes": 12006,
+      "quality_score": 9.1,
+      "downloads_total": 0,
       "platforms": ["linux", "macos", "windows"]
     }
   ]
