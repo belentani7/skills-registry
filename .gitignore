@@ -1,30 +1,33 @@
-# Dependencias
+# dependencias
 node_modules/
 .venv/
 venv/
 __pycache__/
-# Builds
+*.py[cod]
+
+# build
 dist/
 build/
 .next/
-.turbo/
-*.tsbuildinfo
-# Entorno y secretos (NUNCA commitear)
+out/
+target/
+*.egg-info/
+
+# entorno y secretos
 .env
-.env.*
-!.env.example
+.env.local
+.env.*.local
 *.pem
 *.key
-# OS/IDE
+
+# sistema
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-# Python
-*.pyc
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
-# Logs
 *.log
-orchestrator.log*
+
+# cache
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
