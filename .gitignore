@@ -40,3 +40,12 @@ node_modules/
 __pycache__/
 .vercel/
 *.log
+
+# IA agent states
+.cline/
+.opencode/
+.mcp/
+.zen/
+.mimocode/
+.zcode/
+*agent_state*
