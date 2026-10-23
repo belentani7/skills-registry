@@ -81,3 +81,26 @@ test('missing SKILL.md fails without mutation', () => fixture(({ source, target 
 test('empty installed directory is valid', () => fixture(({ target }) => {
   assert.equal(run('list', '--target', target).status, 0);
 }));
+
+test('reject target nested inside source without writing', () => fixture(({ source }) => {
+  const nested = join(source, 'installed');
+  const result = run('add', source, '--target', nested);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /must not be the source or inside/);
+  assert.equal(existsSync(nested), false);
+}));
+test('reject source as target even in dry-run', () => fixture(({ source }) => {
+  const result = run('add', source, '--target', source, '--dry-run');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /must not be the source or inside/);
+}));
+test('reject hidden credential directories and local databases', () => fixture(({ source, target }) => {
+  mkdirSync(join(source, '.ssh'));
+  writeFileSync(join(source, '.ssh', 'id_example'), 'not a real secret');
+  assert.notEqual(run('add', source, '--target', target).status, 0);
+  assert.equal(existsSync(target), false);
+  rmSync(join(source, '.ssh'), { recursive: true });
+  writeFileSync(join(source, 'clients.sqlite3'), 'fixture');
+  assert.notEqual(run('add', source, '--target', target).status, 0);
+  assert.equal(existsSync(target), false);
+}));
