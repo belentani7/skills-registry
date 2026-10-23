@@ -35,7 +35,7 @@ node dist/index.js search example --target ./installed
 node dist/index.js info example-skill --target ./installed
 ```
 
-The installer rejects invalid IDs, malformed manifests, symlinks, secrets-bearing files, oversized packages and destination overwrites. It copies files to a temporary directory before renaming. It does **not** guarantee protection against hostile concurrent filesystem changes; run only on a trusted device and review skill content. For safe backup/restore, preserve both the original skill and the target directory before changes.
+The installer rejects invalid IDs, malformed manifests, symlinks, common credential directories and local database files, oversized packages, destination overwrites, and a destination that equals or is nested within the source. These are conservative filename safeguards, not a content-based secret scan. It copies files to a temporary directory before renaming. It does **not** guarantee protection against hostile concurrent filesystem changes; run only on a trusted device and review skill content. For safe backup/restore, preserve both the original skill and the target directory before changes.
 
 ## Known gaps
 
