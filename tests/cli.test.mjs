@@ -104,3 +104,11 @@ test('reject hidden credential directories and local databases', () => fixture((
   assert.notEqual(run('add', source, '--target', target).status, 0);
   assert.equal(existsSync(target), false);
 }));
+
+test('CLI version matches package metadata', () => {
+  const pkgPath = fileURLToPath(new URL('../package.json', import.meta.url));
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+  const result = run('--version');
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout.trim(), pkg.version);
+});
