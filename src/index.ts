@@ -5,7 +5,7 @@ import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import process from 'node:process';
 
-const VERSION = '1.1.0';
+const VERSION = '1.0.0';
 const DEFAULT_TARGET = join(homedir(), '.qwen', 'skills');
 const ID_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 const VERSION_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
