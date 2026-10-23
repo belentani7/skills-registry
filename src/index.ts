@@ -2,7 +2,7 @@
 /** Offline-first Skills Registry CLI. No remote code execution or implicit downloads. */
 import { copyFileSync, existsSync, lstatSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import process from 'node:process';
 
 const VERSION = '1.1.0';
@@ -11,7 +11,7 @@ const ID_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 const VERSION_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
 const MAX_FILES = 1000;
 const MAX_BYTES = 10 * 1024 * 1024;
-const SENSITIVE = /^(?:\.git|node_modules|\.env(?:\..*)?|\.npmrc|\.pypirc|id_rsa|id_ed25519|credentials\.json|secrets\.json)$/i;
+const SENSITIVE = /^(?:\.git|node_modules|\.env(?:\..*)?|\.npmrc|\.pypirc|\.ssh|\.aws|\.kube|\.netrc|\.gitconfig|\.docker|\.terraform|id_rsa|id_ed25519|credentials\.json|secrets\.json|.*\.(?:sqlite3?|db))$/i;
 const SENSITIVE_EXT = /\.(?:pem|key|p12|pfx)$/i;
 
 type Manifest = { id: string; version: string; name?: string; description?: string };
@@ -107,6 +107,11 @@ function installed(target: string): Array<{ manifest: Manifest; directory: strin
   return result.sort((a, b) => a.manifest.id.localeCompare(b.manifest.id));
 }
 
+function isInsideDirectory(parent: string, candidate: string): boolean {
+  const path = relative(resolve(parent), resolve(candidate));
+  return path === '' || (path !== '..' && !path.startsWith('..' + sep) && !isAbsolute(path));
+}
+
 function add(source: string, options: Options): void {
   if (!source || (/^(?:https?:\/\/|[\w.-]+\/[\w.-]+$)/i.test(source) && !existsSync(source))) {
     throw new Error('Remote install unavailable: provide an explicit local skill directory');
@@ -114,9 +119,14 @@ function add(source: string, options: Options): void {
   const root = resolve(source);
   if (!existsSync(root) || !lstatSync(root).isDirectory()) throw new Error('Source must be a local directory, not a symlink');
   assertNoSymlinkComponents(root);
+  const target = resolve(options.target);
+  // Staging inside the source can capture previous installs or private files.
+  // Reject overlap before even reading the manifest or creating directories.
+  if (isInsideDirectory(root, target)) {
+    throw new Error('Installation target must not be the source or inside the source directory');
+  }
   const manifest = manifestFrom(root);
   const files = collectFiles(root);
-  const target = resolve(options.target);
   const destination = join(target, manifest.id);
   assertNoSymlinkComponents(destination);
   if (existsSync(destination)) throw new Error(`Skill already installed; refusing overwrite: ${manifest.id}`);
