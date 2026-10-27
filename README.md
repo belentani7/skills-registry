@@ -1,93 +1,49 @@
-[![Open in VS Code](https://img.shields.io/badge/Open_in-VS_Code-007ACC?logo=visualstudiocode&logoColor=white)](https://github.dev/belentani7/skills-registry)
+# Skills Registry — local-first agent skills CLI
 
-# 🌐 Skills Registry — Global CLI Agent Skills System
+**Status: public source prototype, not a published global registry.** This repository currently contains a Node.js/TypeScript command-line program, not a populated `registry.json`, a `skills/` catalog, or a public website. The old documentation advertised 23+ skills, six working integrations and an auto-publish workflow; none of those claims is verified by the current repository tree. Do not distribute it as a live catalog or install it from an untrusted third party.
 
-**El NPM de las Skills para Agents CLI.**  
-Un sistema universal para organizar, distribuir e instanciar skills en agentes CLI (Qwen Code, Claude Code, Cline, OpenCode, Codex CLI, Gemini CLI).
+## Verified scope of this branch
 
-## 🔗 Schema completo
+The CLI installs a **local skill directory** after validating `manifest.json` and `SKILL.md`. It supports `add`, `list`, `search`, and `info` for local installed skills. No network fetch, remote install, executable skill hook, dependency auto-install, update, or public publication is performed. A skill's content remains untrusted; review its instructions before using it in an AI agent. Installations never overwrite an existing skill. The default destination is `~/.qwen/skills` (customize with `--target`). Other agents' directory formats are not yet tested.
 
-📄 [SCHEMA.md](./SCHEMA.md) — Especificación completa del sistema
+### Build and test
 
-## ⚡ Quick Start
-
-### Instalar una Skill
+Requires Node.js 22 and npm. The npm lockfile is the currently selected install source; the old `pnpm-lock.yaml` is historical and not independently validated.
 
 ```bash
-npx skills add belentani7/skills-registry open-school
-npx skills add belentani7/skills-registry cursor-ai-cli-unified
+npm ci --ignore-scripts
+npm run typecheck
+npm test
 ```
 
-### Buscar Skills
+`npm test` compiles TypeScript and runs isolated Node CLI integration tests. A real CI runner and a fresh-install test must pass before release; these commands are **instructions**, not claims of successful GitHub CI.
+
+### Local use
+
+Create a directory with `SKILL.md` and a `manifest.json` such as:
+
+```json
+{"id":"example-skill","version":"1.0.0","description":"Example only"}
+```
 
 ```bash
-npx skills search "education"
-npx skills search "multi-file editing"
-npx skills search "token optimization"
+npm run build
+node dist/index.js add ./example-skill --target ./installed --dry-run
+node dist/index.js add ./example-skill --target ./installed
+node dist/index.js list --target ./installed
+node dist/index.js search example --target ./installed
+node dist/index.js info example-skill --target ./installed
 ```
 
-### Ver Info
+The installer rejects invalid IDs, malformed manifests, symlinks (including dangling links), common credential directories and local database files, oversized packages, destination overwrites, and a destination that equals or is nested within the source. These are conservative filename safeguards, not a content-based secret scan. It copies files to a temporary directory before renaming. It does **not** guarantee protection against hostile concurrent filesystem changes; run only on a trusted device and review skill content. For safe backup/restore, preserve both the original skill and the target directory before changes.
 
-```bash
-npx skills info open-school
-```
+## Known gaps
 
-### Listar Instaladas
+- The historical `npx skills add belentani7/skills-registry open-school` example **does not work** because `registry.json` and skill packages are absent; the offline CLI does not implement remote installs. Remote installation is explicitly disabled, not silently simulated.
+- Existing `docs/prd/`, `docs/srs/`, `docs/design/`, `PINNED-POST-READY.txt`, and `workflows/` contain earlier plans or claims, **not evidence of deployed capabilities**. `workflows/` is not a GitHub Actions directory. The branch adds an actual `.github/workflows/ci.yml` for validation, but runner execution must be checked independently.
+- Registry distribution, trusted package signatures, cross-agent compatibility, remote upgrades, UI/SEO, Git history scanning, complete backups and independent restore are **pending**.
+- Do not publish source or assets or change repository visibility without the full privacy/license/history and release gates.
 
-```bash
-npx skills list
-```
+## License and ownership
 
-## 📦 Skills Disponibles
-
-| ID | Versión | Categoría | Descripción |
-|----|---------|-----------|-------------|
-| `cursor-ai-cli-unified` | 1.0.0 | Coding Agents | Unified CLI coding agent workflow based on Cursor IDE patterns |
-| `open-school` | 2.0.0 | Education | Universal digital education platform — modular courses, QR certifications |
-| `caveman` | 1.0.0 | Token Opt | Ultra-compressed mode. Cuts tokens 65%. |
-| `testing-driven-development` | 1.0.0 | Workflows | Use before implementing any feature or bugfix |
-| `brainstorming` | 1.0.0 | Planning | MUST use before creative work: classify → explore → design → approve → implement |
-| ... +18 más en registry.json | | | |
-
-## 🏗️ Arquitectura
-
-```
-github.com/belentani7/skills-registry/
-├── registry.json       ← Índice MAESTRO de todas las skills
-├── cli/src/index.ts    ← Resolver CLI (Node.js)
-└── skills/             ← Cada skill = un directorio con SKILL.md
-    ├── open-school/
-    │   ├── SKILL.md
-    │   └── manifest.json
-    ├── cursor-ai-cli-unified/
-    │   └── ...
-    └── caveman/
-        └── ...
-```
-
-## 🤝 Contribuir
-
-¿Tienes una skill que quieres compartir?
-
-1. Fork el repositorio
-2. Crear carpeta: `skills/mi-skill/SKILL.md`
-3. Añadir `manifest.json` con metadatos correctos
-4. Commit + Pull Request
-5. CI valida automáticamente
-6. Merge → auto-publish
-
-Más detalles en [SCHEMA.md](./SCHEMA.md).
-
-## 🔑 Principios
-
-- **Open Source** — MIT, cualquiera puede contribuir
-- **Versionado Semántico** — v1.0.0 → v1.0.1 → v2.0.0
-- **Zero Lock-in** — Skills funcionan offline después de descargar
-- **Dependencias Declarativas** — Skills pueden depender de otras
-- **Discovery por Tags** — Búsqueda semántica en el registry
-
-## 📊 Estadísticas
-
-- **Total Skills:** 23+
-- **Categorías:** 5 principales (Coding Workflows, Coding Agents, Education, Brainstorming, Token Optimization)
-- **CLI Tools Soportadas:** Qwen Code, Claude Code, Cline, OpenCode/Crush, Codex CLI, Gemini CLI
+The repository contains an MIT license. This does not establish rights to redistribute third-party skills. The Impeccable design guidance (`pbakaus/impeccable`) is Apache-2.0, reviewed read-only; it was not installed, and a CLI has no browser UI to audit for WCAG 2.2.
