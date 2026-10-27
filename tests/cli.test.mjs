@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, existsSync, lstatSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -112,3 +112,22 @@ test('CLI version matches package metadata', () => {
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stdout.trim(), pkg.version);
 });
+
+
+test('dry-run rejects a dangling symlink at the destination', () => fixture(({ root, source, target }) => {
+  mkdirSync(target);
+  const destination = join(target, 'example');
+  symlinkSync(join(root, 'missing'), destination);
+  const result = run('add', source, '--target', target, '--dry-run');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Symbolic link not allowed/);
+  assert.equal(lstatSync(destination).isSymbolicLink(), true);
+}));
+
+test('dry-run rejects a dangling symlink in the target path', () => fixture(({ root, source, target }) => {
+  symlinkSync(join(root, 'missing'), target);
+  const result = run('add', source, '--target', target, '--dry-run');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Symbolic link not allowed/);
+  assert.equal(lstatSync(target).isSymbolicLink(), true);
+}));

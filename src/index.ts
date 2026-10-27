@@ -37,12 +37,22 @@ function parseArgs(args: string[]): { command: string; positional: string[]; opt
   return { command, positional, options: { target, dryRun } };
 }
 
+// Unlike existsSync(), lstatSync detects dangling symlinks. A dry-run must
+// reject them rather than reporting a destination as safe to install.
+function pathEntryExists(path: string): boolean {
+  try { lstatSync(path); return true; }
+  catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw error;
+  }
+}
+
 function assertNoSymlinkComponents(path: string): void {
   const absolute = resolve(path);
   let current = isAbsolute(absolute) ? resolve(absolute, sep) : sep;
   for (const component of absolute.slice(current.length).split(sep).filter(Boolean)) {
     current = join(current, component);
-    if (existsSync(current) && lstatSync(current).isSymbolicLink()) {
+    if (pathEntryExists(current) && lstatSync(current).isSymbolicLink()) {
       throw new Error(`Symbolic link not allowed in destination: ${current}`);
     }
   }
@@ -129,7 +139,7 @@ function add(source: string, options: Options): void {
   const files = collectFiles(root);
   const destination = join(target, manifest.id);
   assertNoSymlinkComponents(destination);
-  if (existsSync(destination)) throw new Error(`Skill already installed; refusing overwrite: ${manifest.id}`);
+  if (pathEntryExists(destination)) throw new Error(`Skill already installed; refusing overwrite: ${manifest.id}`);
   if (options.dryRun) {
     console.log(`DRY RUN: ${manifest.id}@${manifest.version} (${files.length} files) -> ${destination}`);
     return;
@@ -146,7 +156,7 @@ function add(source: string, options: Options): void {
       if (!lstatSync(src).isFile()) throw new Error(`Source changed during install: ${relative}`);
       copyFileSync(src, dest);
     }
-    if (existsSync(destination)) throw new Error('Destination appeared during installation');
+    if (pathEntryExists(destination)) throw new Error('Destination appeared during installation');
     renameSync(staging, destination);
     console.log(`Installed ${manifest.id}@${manifest.version} (${files.length} files)`);
   } catch (e) {

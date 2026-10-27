@@ -1,6 +1,6 @@
 # Skills Registry — local-first agent skills CLI
 
-**Status: private prototype, not a published global registry.** This repository currently contains a Node.js/TypeScript command-line program, not a populated `registry.json`, a `skills/` catalog, or a public website. The old documentation advertised 23+ skills, six working integrations and an auto-publish workflow; none of those claims is verified by the current repository tree. Do not distribute it as a live catalog or install it from an untrusted third party.
+**Status: public source prototype, not a published global registry.** This repository currently contains a Node.js/TypeScript command-line program, not a populated `registry.json`, a `skills/` catalog, or a public website. The old documentation advertised 23+ skills, six working integrations and an auto-publish workflow; none of those claims is verified by the current repository tree. Do not distribute it as a live catalog or install it from an untrusted third party.
 
 ## Verified scope of this branch
 
@@ -35,11 +35,11 @@ node dist/index.js search example --target ./installed
 node dist/index.js info example-skill --target ./installed
 ```
 
-The installer rejects invalid IDs, malformed manifests, symlinks, common credential directories and local database files, oversized packages, destination overwrites, and a destination that equals or is nested within the source. These are conservative filename safeguards, not a content-based secret scan. It copies files to a temporary directory before renaming. It does **not** guarantee protection against hostile concurrent filesystem changes; run only on a trusted device and review skill content. For safe backup/restore, preserve both the original skill and the target directory before changes.
+The installer rejects invalid IDs, malformed manifests, symlinks (including dangling links), common credential directories and local database files, oversized packages, destination overwrites, and a destination that equals or is nested within the source. These are conservative filename safeguards, not a content-based secret scan. It copies files to a temporary directory before renaming. It does **not** guarantee protection against hostile concurrent filesystem changes; run only on a trusted device and review skill content. For safe backup/restore, preserve both the original skill and the target directory before changes.
 
 ## Known gaps
 
-- The historical `npx skills add belentani7/skills-registry open-school` example **does not work** because `registry.json` and skill packages are absent and this repository is private. Remote installation is explicitly disabled, not silently simulated.
+- The historical `npx skills add belentani7/skills-registry open-school` example **does not work** because `registry.json` and skill packages are absent; the offline CLI does not implement remote installs. Remote installation is explicitly disabled, not silently simulated.
 - Existing `docs/prd/`, `docs/srs/`, `docs/design/`, `PINNED-POST-READY.txt`, and `workflows/` contain earlier plans or claims, **not evidence of deployed capabilities**. `workflows/` is not a GitHub Actions directory. The branch adds an actual `.github/workflows/ci.yml` for validation, but runner execution must be checked independently.
 - Registry distribution, trusted package signatures, cross-agent compatibility, remote upgrades, UI/SEO, Git history scanning, complete backups and independent restore are **pending**.
 - Do not publish source or assets or change repository visibility without the full privacy/license/history and release gates.
