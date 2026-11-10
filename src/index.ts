@@ -2,7 +2,7 @@
 // @ts-check
 /**
  * Skills Registry CLI — Resuelve, instala y gestiona skills desde el registry global.
- * 
+ *
  * Usage:
  *   npx skills add belentani7/skills-registry open-school
  *   npx skills list
@@ -54,13 +54,13 @@ function skillInstallPath(id) {
 async function cmdAdd(repo, skillId) {
   // Parse repo → owner/name
   const [owner, name] = repo.split('/');
-  
+
   log(`Installing ${skillId} from ${owner}/${name}...`);
-  
+
   // Fetch registry
   const registryUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/registry.json`;
   const registry = await fetchJSON(registryUrl);
-  
+
   // Find skill in registry
   const skillEntry = registry.skills.find(s => s.id === skillId);
   if (!skillEntry) {
@@ -68,7 +68,7 @@ async function cmdAdd(repo, skillId) {
     error(`Available skills: ${registry.skills.map(s => s.id).join(', ')}`);
     process.exit(1);
   }
-  
+
   // Check dependencies
   if (skillEntry.dependencies?.length > 0) {
     log(`Resolving ${skillEntry.dependencies.length} dependency(ies)...`);
@@ -76,11 +76,11 @@ async function cmdAdd(repo, skillId) {
       await cmdAdd(repo, dep);
     }
   }
-  
+
   // Download skill files
   const installDir = skillInstallPath(skillId);
   ensureDir(installDir);
-  
+
   const baseFiles = ['SKILL.md', 'manifest.json', 'README.md'];
   for (const file of baseFiles) {
     const fileUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/skills/${skillId}/${file}`;
@@ -92,7 +92,7 @@ async function cmdAdd(repo, skillId) {
       // File optional, skip if missing
     }
   }
-  
+
   // Copy manifest.json as the main entry
   const manifestUrl = `https://raw.githubusercontent.com/${owner}/${name}/main/skills/${skillId}/manifest.json`;
   try {
@@ -100,7 +100,7 @@ async function cmdAdd(repo, skillId) {
     const manifest = await res.json();
     writeFileSync(join(installDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   } catch {}
-  
+
   log(`✓ Installed ${skillId} v${skillEntry.version} in ${installDir}`);
   log(`  Related skills: ${(skillEntry.related_skills || []).join(', ') || 'none'}`);
 }
@@ -111,12 +111,12 @@ async function cmdList() {
     log('  No skills installed.');
     return;
   }
-  
+
   const dirs = execSync(`ls -d ${SKILLS_DIR}/*/`, { encoding: 'utf8' })
     .trim()
     .split('\n')
     .filter(Boolean);
-  
+
   for (const dir of dirs) {
     const manifestPath = join(dir, 'manifest.json');
     if (existsSync(manifestPath)) {
@@ -135,19 +135,19 @@ async function cmdList() {
 async function cmdSearch(query) {
   const registryUrl = 'https://raw.githubusercontent.com/belentani7/skills-registry/main/registry.json';
   const registry = await fetchJSON(registryUrl);
-  
+
   const results = registry.skills.filter(s =>
     s.id.toLowerCase().includes(query.toLowerCase()) ||
     s.name.toLowerCase().includes(query.toLowerCase()) ||
     s.description.toLowerCase().includes(query.toLowerCase()) ||
     (s.tags || []).some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   );
-  
+
   if (results.length === 0) {
     log(`No skills found matching "${query}".`);
     return;
   }
-  
+
   log(`Found ${results.length} skill(s) matching "${query}":`);
   for (const s of results) {
     log(`  ${s.id} v${s.version} — ${s.description.substring(0, 70)}...`);
@@ -159,12 +159,12 @@ async function cmdInfo(skillId) {
   const registryUrl = 'https://raw.githubusercontent.com/belentani7/skills-registry/main/registry.json';
   const registry = await fetchJSON(registryUrl);
   const skill = registry.skills.find(s => s.id === skillId);
-  
+
   if (!skill) {
     error(`Skill "${skillId}" not found in registry.`);
     process.exit(1);
   }
-  
+
   log(`${skill.name} v${skill.version}`);
   log(`Description: ${skill.description}`);
   log(`Author: ${skill.author}`);
@@ -174,7 +174,7 @@ async function cmdInfo(skillId) {
   log(`Downloads: 📥${skill.downloads_total || '—'}`);
   log(`Related: ${(skill.related_skills || []).join(', ') || '—'}`);
   log(`Triggers: ${(skill.trigger_contains || []).join(', ') || '—'}`);
-  
+
   // Check local install
   const installDir = skillInstallPath(skillId);
   if (existsSync(installDir)) {
@@ -183,7 +183,7 @@ async function cmdInfo(skillId) {
       const localManifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
       log(`Local version: v${localManifest.version || '?'}`);
       log(`Status: ✓ Installed`);
-      
+
       // Check for updates
       if (localManifest.version !== skill.version) {
         log(`Update available: v${localManifest.version} → v${skill.version}`);
@@ -201,7 +201,7 @@ async function cmdInfo(skillId) {
 async function main() {
   const args = process.argv.slice(2);
   const command = args[0];
-  
+
   switch (command) {
     case 'add':
       if (args.length < 3) {
@@ -210,11 +210,11 @@ async function main() {
       }
       await cmdAdd(args[1], args[2]);
       break;
-      
+
     case 'list':
       await cmdList();
       break;
-      
+
     case 'search':
       if (args.length < 2) {
         error('Usage: skills search <query>');
@@ -222,7 +222,7 @@ async function main() {
       }
       await cmdSearch(args[1]);
       break;
-      
+
     case 'info':
       if (args.length < 2) {
         error('Usage: skills info <skill-id>');
@@ -230,12 +230,12 @@ async function main() {
       }
       await cmdInfo(args[1]);
       break;
-      
+
     case '--version':
     case '-V':
       log(VERSION);
       break;
-      
+
     default:
       log('Skills Registry CLI v' + VERSION);
       log('');
