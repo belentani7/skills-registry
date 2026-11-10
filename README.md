@@ -1,4 +1,4 @@
-﻿[![Open in VS Code](https://img.shields.io/badge/Open_in-VS_Code-007ACC?logo=visualstudiocode&logoColor=white)](https://github.dev/belentani7/skills-registry)
+[![Open in VS Code](https://img.shields.io/badge/Open_in-VS_Code-007ACC?logo=visualstudiocode&logoColor=white)](https://github.dev/belentani7/skills-registry)
 
 # 🌐 Skills Registry — Global CLI Agent Skills System
 
