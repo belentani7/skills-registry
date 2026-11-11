@@ -91,3 +91,7 @@ Más detalles en [SCHEMA.md](./SCHEMA.md).
 - **Total Skills:** 23+
 - **Categorías:** 5 principales (Coding Workflows, Coding Agents, Education, Brainstorming, Token Optimization)
 - **CLI Tools Soportadas:** Qwen Code, Claude Code, Cline, OpenCode/Crush, Codex CLI, Gemini CLI
+
+
+## Producto
+Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
