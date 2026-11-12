@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Global registry of CLI agent skills — discover, install, manage skills for Qwen Code, Claude Code, Cline, OpenCode, and more.",
   "type": "module",
-  "main": "cli/src/index.ts",
+  "main": "cli/dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node cli/dist/index.js",
-    "dev": "tsx cli/src/index.ts",
+    "dev": "tsx src/index.ts",
     "validate": "tsx scripts/validate-registry.ts",
     "test": "vitest run",
     "generate-index": "tsx scripts/generate-index.ts"
