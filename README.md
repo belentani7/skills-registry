@@ -92,75 +92,10 @@ Más detalles en [SCHEMA.md](./SCHEMA.md).
 - **Categorías:** 5 principales (Coding Workflows, Coding Agents, Education, Brainstorming, Token Optimization)
 - **CLI Tools Soportadas:** Qwen Code, Claude Code, Cline, OpenCode/Crush, Codex CLI, Gemini CLI
 
-<!-- repo-forge:readme:inicio -->
-## Qué es
-
-**Skills Registry** — registro de skills para agentes (index + CLI).
-
-Una herramienta que se puede auditar: dice qué hace, lo hace, y deja rastro de lo que hizo.
-
-## Estado medido
-
-| Dato | Valor |
-|---|---|
-| Lenguajes | JSON, YAML, HTML, Markdown, TypeScript, JavaScript |
-| Archivos / líneas | 44 / 5814 |
-| Páginas HTML | 3 |
-| Tests detectados | 2 |
-| Cumplimiento de reglas | 37/37 (100.0%) |
-
-Todo lo anterior se midió en disco el 2026-11-10; no es una estimación.
-
-## Uso
-
-```bash
-python scripts/doctor.py   # verificación sin dependencias
-```
-
-## Estructura
-
-```
-assets/
-brand/
-data/
-docs/
-plataforma/
-producto/
-scripts/
-site/
-src/
-tests/
-```
-
-## Diseño de plataforma
-
-- Índice buscable
-- Contrato de skill
-- Verificador
-- Publicación
-- Procedencia
-
-La ficha completa —máximo potencial, marca, fases de monetización y recursos— vive en
-[`plataforma/FICHA.md`](plataforma/FICHA.md). Los tokens de marca están en
-[`brand/tokens.css`](brand/tokens.css).
-
-## Reglas del proyecto
-
-Este repositorio sigue el catálogo oficial del ecosistema (`GH-*`, `WEB-*`, `ACC-*`,
-`SEO-*`, `COH-*`, `DEV-*`). El gate se ejecuta con:
-
-```bash
-python scripts/doctor.py
-```
-
-## Licencia
-
-MIT. Ver [`LICENSE`](LICENSE).
-<!-- repo-forge:readme:fin -->
-<!-- repo-forge:readme:fin -->
-<!-- repo-forge:readme:fin -->
-<!-- repo-forge:readme:fin -->
 
 ## Producto
+Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
 
-Oferta, precio y cobro: [`producto/OFERTA.md`](producto/OFERTA.md) · [`producto/precios.json`](producto/precios.json) · [`producto/landing.html`](producto/landing.html)
+## Alcance del producto
+
+La [ficha del producto](plataforma/FICHA.md) conserva el alcance y las tareas pendientes.
