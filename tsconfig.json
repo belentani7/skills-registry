@@ -9,10 +9,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "cli/dist",
-    "rootDir": "cli/src",
+    "outDir": "dist",
+    "rootDir": "src",
     "sourceMap": true,
     "declaration": false
   },
-  "include": ["cli/src/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }
