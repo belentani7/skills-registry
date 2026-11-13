@@ -1,0 +1,17 @@
+{
+  "name": "Skills Registry",
+  "short_name": "Skills Regis",
+  "description": "registro de skills para agentes (index + CLI)",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#2bb0eb",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

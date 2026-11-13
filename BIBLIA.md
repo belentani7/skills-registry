@@ -53,3 +53,52 @@ Proveer valor a través de tecnología moderna, código mantenible y experiencia
 - Monorepo o repositorio independiente según el producto
 - Despliegue por copia de archivos (cero build) salvo que se especifique lo contrario
 - Working trees respetados: no se sobrescriben cambios sin restaurar desde HEAD
+
+<!-- repo-forge:biblia:inicio -->
+# BIBLIA.md — skills-registry
+
+Doctrina del producto del repositorio `skills-registry` del ecosistema belentani7.
+
+## Visión
+
+el npm de las skills: publicar, versionar y verificar una skill con un comando, con procedencia y auditoría de cada afirmación
+
+## Misión
+
+Una herramienta que se puede auditar: dice qué hace, lo hace, y deja rastro de lo que hizo.
+
+## Público
+
+desarrolladores que construyen agentes y necesitan skills reutilizables
+
+## Stack
+
+sitio estático publicable tal cual · JSON, YAML, HTML, Markdown, TypeScript, JavaScript
+
+## Módulos que la promesa exige
+
+- Índice buscable
+- Contrato de skill
+- Verificador
+- Publicación
+- Procedencia
+
+## Reglas de desarrollo
+
+- Protocolo spec-first: PRD → SRS → Design Doc → ADR → Plan → Tests.
+- Un cambio, un resultado verificable.
+- Nada se afirma sin ejecución; lo no probado se declara como no probado.
+- Escritura solo con confirmación; nada destructivo.
+- Idioma del producto: español, salvo el público del repositorio.
+- Secreto fuera de disco, logs y manifiestos.
+
+## Lo que este repositorio no va a hacer
+
+skills sin contrato verificable
+
+## Convenciones
+
+`type(scope): resumen` — feat, fix, docs, chore, refactor, test, perf.
+
+<!-- repo-forge:biblia -->
+<!-- repo-forge:biblia:fin -->
