@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "updated": "2026-11-16",
+  "count": 1,
+  "skills": [
+    {
+      "name": "meta-skill",
+      "version": "1.0.0",
+      "category": "Routing",
+      "description": "Offline, explainable router and token-budget advisor for coding and multi-step work. Classifies the task, recommends a model tier, explains uncertainty and delegates to a more specific installed skill. No prompt is sent to an API.",
+      "license": "MIT",
+      "source": "https://github.com/belentani7/meta-skill/blob/main/meta-skill/SKILL.md",
+      "repository": "https://github.com/belentani7/meta-skill",
+      "tags": ["routing", "model-selection", "token-budget", "offline", "zero-dependencies"]
+    }
+  ]
+}
