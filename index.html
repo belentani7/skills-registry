@@ -37,7 +37,7 @@
     <div class="hero-canvas-wrapper">
       <canvas id="hero-canvas"></canvas>
     </div>
-    <div class="hero-overlay">
+    <div class="hero-overlay" id="react-hero">
       <h1>skills-registry</h1>
       <p>Repositorio skills-registry — parte del ecosistema Belentani</p>
       <div class="hero-actions">
@@ -94,5 +94,24 @@
     });
   </script>
 <!-- page-fix:1 -->
+<script type="application/json" id="hero-data">
+{
+  "eyebrow": "",
+  "title": "skills-registry",
+  "subtitle": "skills-registry Repositorio skills-registry — parte del ecosistema Belentani",
+  "install": "npm ci && npm run build && npm start",
+  "docsHref": "docs.html",
+  "repoHref": "https://github.com/belentani7/skills-registry",
+  "demoHref": "",
+  "chips": [
+    "skills",
+    "registry",
+    "qwen-code",
+    "claude-code",
+    "cline"
+  ]
+}
+</script>
+<script src="site-hero.js" defer></script>
 </body>
 </html>
